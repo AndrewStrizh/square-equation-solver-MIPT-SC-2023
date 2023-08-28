@@ -23,7 +23,7 @@ enum ROOT_KEYS
 
 /**
  *Function initializing the parameters of a quadratic equation
- *\param *params - structure storing the parameters of a quadratic equation
+ *\param *params - address of structure storing the parameters of a quadratic equation
  */
 int init_params(struct Params* params);
 
@@ -31,14 +31,14 @@ int init_params(struct Params* params);
 /**
  *\brief The main function solving the quadratic equation
  *\param params - structure storing the parameters of a quadratic equation
- *\param *roots - structure storing the values of the roots of a quadratic equation
+ *\param *roots - address of structure storing the values of the roots of a quadratic equation
  */
 int print_solution(const struct Params params, struct Roots* roots);
 
 
 /**
  *Function that starts the execution of tests
- *\param *filename - the address of the file, name entered by the user
+ *\param *filename - address of the file, name entered by the user
  */
 int all_tests(const char* filename);
 
