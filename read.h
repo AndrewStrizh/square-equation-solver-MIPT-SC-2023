@@ -16,9 +16,7 @@
 
 
 #define ERROR_COLOR(str) RED_TEXT str RESET_COLOR
-
 #define CORRECT_COLOR(str) GREEN_TEXT str RESET_COLOR
-
 #define SMALL_ERROR_COLOR(str) YELLOW_TEXT str RESET_COLOR
 
 
@@ -32,10 +30,9 @@ const int BUFFER_SIZE
  *and handles its errors
  *\param *value - address of the parameter value entered by the user
  *\param *prompt - address of prompt for input
- *\param param - parameter name (a,b,c)
  *\return in case of an error, returns 1
  */
-int read_double(double* value, const char* prompt, const char param);
+int read_double(double* value, const char* prompt);
 
 
 /**
@@ -43,9 +40,9 @@ int read_double(double* value, const char* prompt, const char param);
  *parameter
  *in case of an error
  *\param *value - address of the parameter value entered by the user
- *\param param - parameter name (a,b,c)
+ *\param *prompt - address of prompt for input
  */
-int do_read_double(double* value, const char param);
+int do_read_double(double* value, const char* prompt);
 
 
 /**
@@ -53,6 +50,17 @@ int do_read_double(double* value, const char param);
  *\param *params - address of the structure storing the parameters of a quadratic equation
  */
 int init_params(struct Params* params);
+
+
+/**
+ *Function that draws a graph according to the specified parameters interval X and step
+ *\param params - structure storing the parameters of a quadratic equation
+ *\param lx - left border of the graph
+ *\param rx - right border of the graph
+ *\param step - step with which the graph points are calculated
+ *\return in case of an error, returns 1
+ */
+int graph(const struct Params p, double lx, const double rx, const double step);
 
 
 /**
