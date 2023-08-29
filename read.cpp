@@ -7,7 +7,7 @@
 #include "read.h"
 
 
-int read_double(double* value, const char* prompt, const char param)
+int read_double(double* value, const char* prompt)
 {
     assert(value);
     assert(prompt);
@@ -17,7 +17,7 @@ int read_double(double* value, const char* prompt, const char param)
     char* end = NULL;
     char buf[BUFFER_SIZE] = "";
 
-    printf("%s%c: ", prompt, param);
+    printf("%s: ", prompt);
 
     /* Read to buffer */
     if (!fgets(buf, sizeof(buf), stdin))
@@ -68,18 +68,18 @@ int read_double(double* value, const char* prompt, const char param)
 }
 
 
-int do_read_double(double* value, const char param)
+int do_read_double(double* value, const char* prompt)
 {
     assert(value);
     assert(isfinite(*value));
-
     int status = 0;
     do
     {
-        status = read_double(value, "Enter the parameter ", param);
+        char enter[25] = "Enter the ";
+        status = read_double(value, strcat(enter, prompt));
         if (status != 0)
         {
-            printf(SMALL_ERROR_COLOR("Please try again.\n"));
+            printf(SMALL_ERROR_COLOR("\aPlease try again.\n"));
         }
     } while (status != 0);
     return 0;
@@ -93,9 +93,34 @@ int init_params(struct Params* params)
     assert(isfinite(params->b));
     assert(isfinite(params->c));
 
-    do_read_double(&(params->a), 'a');
-    do_read_double(&(params->b), 'b');
-    do_read_double(&(params->c), 'c');
+    do_read_double(&(params->a), "parameter a");
+    do_read_double(&(params->b), "parameter b");
+    do_read_double(&(params->c), "parameter c");
     printf("--> You have entered: a = %lf; b = %lf; c = %lf\n", params->a, params->b, params->c);
     return 0;
+}
+
+
+int graph(const struct Params p, const double lx, const double rx, const double step)
+{
+    assert(isfinite(lx));
+    assert(isfinite(rx));
+    assert(isfinite(step));
+
+    if (lx < rx && step < rx - lx)
+    {
+        FILE* tmp = fopen("params.tsv", "w");
+        for (float i = lx; i < rx; i += step)
+        {
+            fprintf(tmp, "%fl\t%.4fl\n", i, p.a * (i * i) + p.b * (i) + p.c);
+        }
+        fclose(tmp);
+        system("uplot line params.tsv -w 80 -h 50");
+        return 0;
+    }
+    else
+    {
+        printf("wrong borders or step\n");
+        return 1;
+    }
 }
