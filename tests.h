@@ -20,7 +20,7 @@
     (                                                                                              \
         {                                                                                          \
             struct test_solve_square t = { { a, b, c }, { x1, x2 }, nRoots };                      \
-            run_test_solve_square(t, &correct_answers, &all_answers, filename);                    \
+            run_test_solve_square(t, &correct_answers, &all_answers, tmp);                         \
         })
 
 
@@ -88,7 +88,7 @@ int equate_double_test(const double x, const double y);
  *\param *filename - address of the file, name entered by the user
  *\param *all_answers - address of the number of all tests
  */
-int test_solve(const struct test_solve_square t, const char* filename, int* all_answers);
+int test_solve(const struct test_solve_square t, FILE* tmp, int* all_answers);
 
 
 /**
@@ -99,7 +99,7 @@ int test_solve(const struct test_solve_square t, const char* filename, int* all_
  *\param *all_answers - address of the number of all tests
  *\param *filename - address of the file, name entered by the use
  */
-int run_test_solve_square(const struct test_solve_square t, int* correct_answers, int* all_answers, const char* filename);
+int run_test_solve_square(const struct test_solve_square t, int* correct_answers, int* all_answers, FILE* tmp);
 
 
 /**
