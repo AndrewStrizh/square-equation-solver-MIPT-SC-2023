@@ -25,6 +25,13 @@ int read_double(double* value, const char* prompt, const char param)
 
     /* Deleting a newline character */
     length = strlen(buf);
+
+    if (length == 0)
+    {
+        fprintf(stderr, SMALL_ERROR_COLOR("Error: An empty string was entered.\n"));
+        return 1;
+    }
+
     if (buf[length - 1] == '\n')
     {
         buf[--length] = '\0';
@@ -33,12 +40,6 @@ int read_double(double* value, const char* prompt, const char param)
         errno = 0;
         *value = strtod(buf, &end);
 
-        /* Error handling */
-        if (length == 0)
-        {
-            fprintf(stderr, SMALL_ERROR_COLOR("Error: An empty string was entered.\n"));
-            return 1;
-        }
         if (errno != 0 || *end != '\0')
         {
             fprintf(stderr, SMALL_ERROR_COLOR("Error: Invalid character.\n"));
@@ -50,6 +51,12 @@ int read_double(double* value, const char* prompt, const char param)
     else
     {
         /* The line is not fully read, skip the rest of the line */
+
+        /* The * symbol means that we want to read the variable from the stream,
+           but we don't want to save it anywhere.
+           The characters [^\n] mean that we want to read exactly the line and exactly
+           to the end, to the newline character. */
+
         scanf("%*[^\n]");
         scanf("%*c");
 
