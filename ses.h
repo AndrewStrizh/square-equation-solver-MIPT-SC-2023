@@ -6,10 +6,14 @@
 /**
  *\mainpage Square equation solver
  *\section ABOUT
- *A simple and intuitive solver of quadratic equations. Written in C as a task at the MIPT Summer School 2023.
- *The project is launched via the console using a makefile. The documentation for the project is written using Doxygen.
+ *A simple and intuitive solver of quadratic equations. Written in C as a task at the MIPT Summer
+ *School 2023.
+ *The project is launched via the console using a makefile. The documentation for the project is
+ *written using Doxygen.
  *To start testing the program, you can use the TEST_SOLVE_SQUARE macro in the file tests.cpp.
- *If you specify the tests argument when running through make, the erroneous tests will be saved to this file.
+ *If you specify the tests argument when running through make, the erroneous tests will be saved to
+ *this file. If you want to use YouPlot to plot your equation, then you need to install it,
+ *you can do this with the help of the brew install youplot command.
  *
  */
 
@@ -51,6 +55,26 @@ int print_solution(const struct Params params, struct Roots* roots);
  *\param *filename - address of the file, name entered by the user
  */
 int all_tests(const char* filename);
+
+/**
+ *Function that draws a graph according to the specified parameters interval X and step
+ *\param params - structure storing the parameters of a quadratic equation
+ *\param lx - left border of the graph
+ *\param rx - right border of the graph
+ *\param step - step with which the graph points are calculated
+ *\return in case of an error, returns 1
+ */
+int graph(const struct Params p, const double lx, const double rx, const double step);
+
+
+/**
+ *Wrapper for the read_double function, which gives the user the opportunity to re-enter the
+ *parameter
+ *in case of an error
+ *\param *value - address of the parameter value entered by the user
+ *\param *prompt - address of prompt for input
+ */
+int do_read_double(double* value, const char* prompt);
 
 
 /**
