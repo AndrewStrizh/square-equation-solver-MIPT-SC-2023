@@ -14,7 +14,7 @@ int equate_double_test(const double x, const double y)
 
 
 int run_test_solve_square(
-    const struct test_solve_square t, int* correct_answers, int* all_answers, FILE* tmp)
+    const struct test_solve_square t, FILE* tmp, int* correct_answers, int* all_answers)
 {
     assert(tmp);
     assert(correct_answers);
