@@ -26,12 +26,6 @@ int read_double(double* value, const char* prompt, const char param)
     /* Deleting a newline character */
     length = strlen(buf);
 
-    if (length == 0)
-    {
-        fprintf(stderr, SMALL_ERROR_COLOR("Error: An empty string was entered.\n"));
-        return 1;
-    }
-
     if (buf[length - 1] == '\n')
     {
         buf[--length] = '\0';
@@ -40,6 +34,11 @@ int read_double(double* value, const char* prompt, const char param)
         errno = 0;
         *value = strtod(buf, &end);
 
+        if (length == 0)
+        {
+            fprintf(stderr, SMALL_ERROR_COLOR("Error: An empty string was entered.\n"));
+            return 1;
+        }
         if (errno != 0 || *end != '\0')
         {
             fprintf(stderr, SMALL_ERROR_COLOR("Error: Invalid character.\n"));
