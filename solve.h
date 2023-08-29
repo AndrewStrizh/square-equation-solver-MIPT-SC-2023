@@ -41,7 +41,7 @@ enum ROOT_KEYS
  *\param p - structure stores the parameters of the quadratic equation
  *\param *r - address of the structure storing the values of the roots of a quadratic equation
  */
-ROOT_KEYS solve_square(const struct Params p, struct st_roots* r);
+ROOT_KEYS solve_square(const struct Params p, struct Roots* r);
 
 
 /**
@@ -54,7 +54,7 @@ ROOT_KEYS solve_linear(const struct Params p, struct Roots* r);
 
 /**
  *Function for comparing double number and zero
- *\param x - compared numbers
+ *\param x - compared number
  */
 int equate_zero(const double x);
 
