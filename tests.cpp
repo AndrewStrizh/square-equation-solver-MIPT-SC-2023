@@ -14,8 +14,9 @@ int equate_double_test(const double x, const double y)
 
 
 int run_test_solve_square(
-    const struct test_solve_square t, int* correct_answers, int* all_answers, const char* filename)
+    const struct test_solve_square t, int* correct_answers, int* all_answers, FILE* tmp)
 {
+    assert(tmp);
     assert(correct_answers);
     assert(all_answers);
     assert(isfinite(t.p.a));
@@ -24,7 +25,7 @@ int run_test_solve_square(
     assert(isfinite(t.r.x1));
     assert(isfinite(t.r.x2));
 
-    if (test_solve(t, filename, all_answers) == 0)
+    if (test_solve(t, tmp, all_answers) == 0)
     {
         printf(CORRECT_COLOR("test passed\n"));
         ++(*correct_answers);
@@ -33,8 +34,10 @@ int run_test_solve_square(
     return 0;
 }
 
-int test_solve(const struct test_solve_square t, const char* filename, int* all_answers)
+int test_solve(const struct test_solve_square t, FILE* tmp, int* all_answers)
 {
+    assert(tmp);
+    assert(all_answers);
     assert(isfinite(t.p.a));
     assert(isfinite(t.p.b));
     assert(isfinite(t.p.c));
@@ -49,12 +52,10 @@ int test_solve(const struct test_solve_square t, const char* filename, int* all_
     {
         printf(ERROR_COLOR("FAILURE TEST %d: a=%lf; b = %lf; c = %lf\n"), *all_answers, t.p.a,
             t.p.b, t.p.c);
-        FILE* tmp = fopen(filename, "a");
         fprintf(tmp,
-            "FAILURE TEST ¹%d: a=%lf; b = %lf; c = %lf\nright x1 = %lf\tright x2 = %lf\tright"
+            "FAILURE TEST â„–%d: a=%lf; b = %lf; c = %lf\nright x1 = %lf\tright x2 = %lf\tright"
             "number of roots = %d\nprog x1 = %lf\tprog x2 = %lf\tprog number of roots = %d\n\n",
             *all_answers, t.p.a, t.p.b, t.p.c, t.r.x1, t.r.x2, t.nRootsRef, x.x1, x.x2, nRoots);
-        fclose(tmp);
         return 1;
     }
     else
@@ -63,6 +64,8 @@ int test_solve(const struct test_solve_square t, const char* filename, int* all_
 
 int all_tests(const char* filename)
 {
+    assert(filename);
+
     BEGIN_TEST;
     FILE* tmp = fopen(filename, "w");
     TEST_SOLVE_SQUARE(10000, 1, 0, 0, 0, 1);
