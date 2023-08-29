@@ -1,4 +1,3 @@
-#include "ses.h"
 #include <errno.h>
 #include <stdio.h>
 #include <assert.h>
@@ -6,6 +5,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include "ses.h"
 
 int main(int argc, char* argv[])
 {
