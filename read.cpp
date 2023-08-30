@@ -71,7 +71,9 @@ int read_double(double* value, const char* prompt)
 int do_read_double(double* value, const char* prompt)
 {
     assert(value);
+    assert(prompt);
     assert(isfinite(*value));
+
     int status = 0;
     do
     {
@@ -101,21 +103,24 @@ int init_params(struct Params* params)
 }
 
 
-int graph(const struct Params p, const double lx, const double rx, const double step)
+int graph(const struct Params p, const struct Graph_params gp)
 {
-    assert(isfinite(lx));
-    assert(isfinite(rx));
-    assert(isfinite(step));
+    assert(isfinite(gp.lx));
+    assert(isfinite(gp.rx));
+    assert(isfinite(gp.step));
+    assert(isfinite(p.a));
+    assert(isfinite(p.b));
+    assert(isfinite(p.c));
 
-    if (lx < rx && step < rx - lx)
+    if (gp.lx < gp.rx && gp.step < gp.rx - gp.lx && gp.step > 0)
     {
         FILE* tmp = fopen("params.tsv", "w");
-        for (float i = lx; i < rx; i += step)
+        for (double i = gp.lx; i <= gp.rx; i += gp.step)
         {
-            fprintf(tmp, "%fl\t%.4fl\n", i, p.a * (i * i) + p.b * (i) + p.c);
+            fprintf(tmp, "%.4fl\t%.4fl\n", i, p.a * (i * i) + p.b * (i) + p.c);
         }
         fclose(tmp);
-        system("uplot line params.tsv -w 80 -h 50");
+        system("uplot line -w 80 -h 50 -c green params.tsv");
         return 0;
     }
     else
