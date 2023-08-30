@@ -20,6 +20,7 @@
 #define YELLOW_TEXT "\x1b[33m"
 #define RESET_COLOR "\x1b[0m"
 
+
 const double EPS_ALL = 1e-6; /**< Accuracy of the numerical data type */
 
 
