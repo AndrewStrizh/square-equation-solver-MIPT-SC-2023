@@ -36,13 +36,14 @@ int main(int argc, char* argv[])
 
         if (p == 'Y' || p == 'y')
         {
-            double lx = 0, rx = 0, step = 0;
+            struct Graph_params graph_params = {0,0,0}; //{left board, right board, step}
+
             do
             {
-                do_read_double(&lx, "left border of the interval x");
-                do_read_double(&rx, "right border of the interval x");
-                do_read_double(&step, "step");
-            } while (graph(params, lx, rx, step) != 0);
+                do_read_double(&(graph_params.lx), "left border of the interval x");
+                do_read_double(&(graph_params.rx), "right border of the interval x");
+                do_read_double(&(graph_params.step), "step");
+            } while (graph(params, graph_params) != 0);
         };
 
         print_solution(params, &roots);
