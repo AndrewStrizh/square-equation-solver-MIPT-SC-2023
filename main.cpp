@@ -22,8 +22,8 @@ int main(int argc, char* argv[])
                "# (c) STA, 2023\n\n");
 
 
-        struct Params params = { 0, 0, 0 };
-        struct Roots roots = { 0, 0 };
+        struct Params params = { 0, 0, 0 }; //{a, b, c}
+        struct Roots roots = { 0, 0 };      //{x1, x2}
 
         char p = 'N';
 
