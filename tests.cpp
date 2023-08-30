@@ -1,84 +1,109 @@
 #include <assert.h>
 #include <math.h>
 #include <stdio.h>
-#include "tests.h"
+#include "solve.h"
 
 
-int equate_double_test(const double x, const double y)
+int equate_zero(const double x)
 {
     assert(isfinite(x));
-    assert(isfinite(y));
 
-    return fabs(x - y) < EPS_TEST;
+    return fabs(x - 0) < EPS_ALL;
 }
 
 
-int run_test_solve_square(
-    const struct test_solve_square t, FILE* tmp, int* correct_answers, int* all_answers)
+ROOT_KEYS solve_square(const struct Params p, struct Roots* r)
 {
-    assert(tmp);
-    assert(correct_answers);
-    assert(all_answers);
-    assert(isfinite(t.p.a));
-    assert(isfinite(t.p.b));
-    assert(isfinite(t.p.c));
-    assert(isfinite(t.r.x1));
-    assert(isfinite(t.r.x2));
+    assert(isfinite(p.a));
+    assert(isfinite(p.b));
+    assert(isfinite(p.c));
+    assert(r);
+    assert(isfinite(r->x1));
+    assert(isfinite(r->x2));
 
-    if (test_solve(t, tmp, all_answers) == 0)
+    if (equate_zero(p.a))
+        return solve_linear(p, r);
+    else
     {
-        printf(CORRECT_COLOR("test passed\n"));
-        ++(*correct_answers);
+        double aa = p.a * 2;
+        const double discr = p.b * p.b - 4 * p.a * p.c;
+        if (equate_zero(discr))
+        {
+            if (equate_zero(p.b))
+                r->x1 = p.b;
+            else
+                r->x1 = -p.b / aa;
+            return ONE_ROOT;
+        }
+        else if (discr > EPS_ALL)
+        {
+            const double sq_discr = sqrt(discr);
+            r->x1 = (-p.b - sq_discr) / aa;
+            r->x2 = (-p.b + sq_discr) / aa;
+            return TWO_ROOTS;
+        }
+        else
+            return ZERO_ROOTS;
     }
-    ++(*all_answers);
-    return 0;
 }
 
 
-int test_solve(const struct test_solve_square t, FILE* tmp, int* all_answers)
+ROOT_KEYS solve_linear(const struct Params p, struct Roots* r)
 {
-    assert(tmp);
-    assert(all_answers);
-    assert(isfinite(t.p.a));
-    assert(isfinite(t.p.b));
-    assert(isfinite(t.p.c));
-    assert(isfinite(t.r.x1));
-    assert(isfinite(t.r.x2));
+    assert(r);
+    assert(isfinite(r->x1));
+    assert(isfinite(p.b));
+    assert(isfinite(p.c));
 
-    struct Roots x = {};
-    int nRoots = solve_square(t.p, &x);
-
-    if (t.nRootsRef != nRoots || !equate_double_test(x.x1, t.r.x1)
-        || !equate_double_test(x.x2, t.r.x2))
+    if (equate_zero(p.b))
     {
-        printf(ERROR_COLOR("FAILURE TEST %d: a=%lf; b = %lf; c = %lf\n"), *all_answers, t.p.a,
-            t.p.b, t.p.c);
-        fprintf(tmp,
-            "FAILURE TEST №%d: a=%lf; b = %lf; c = %lf\nright x1 = %lf\tright x2 = %lf\tright"
-            "number of roots = %d\nprog x1 = %lf\tprog x2 = %lf\tprog number of roots = %d\n\n",
-            *all_answers, t.p.a, t.p.b, t.p.c, t.r.x1, t.r.x2, t.nRootsRef, x.x1, x.x2, nRoots);
-        return 1;
+        if (equate_zero(p.c))
+            return INF_ROOTS;
+        else
+            return ZERO_ROOTS;
     }
     else
-        return 0;
+    {
+        if (equate_zero(p.c))
+            r->x1 = p.c;
+        else
+            r->x1 = -p.c / p.b;
+        return ONE_ROOT;
+    }
 }
 
 
-int all_tests(const char* filename)
+int print_solution(const struct Params params, struct Roots* roots)
 {
-    assert(filename);
+    assert(roots);
+    assert(isfinite(params.a));
+    assert(isfinite(params.b));
+    assert(isfinite(params.c));
+    assert(isfinite(roots->x1));
+    assert(isfinite(roots->x2));
 
-    BEGIN_TEST;
-    FILE* tmp = fopen(filename, "w");
-    TEST_SOLVE_SQUARE(10000, 1, 0, 0, 0, 1);
-    TEST_SOLVE_SQUARE(1, 0, 0, 0, 0, 1);
-    TEST_SOLVE_SQUARE(0, 0, 1, 0, 0, 0);
-    TEST_SOLVE_SQUARE(-1, 0, 0, 0, 0, 1);
-    TEST_SOLVE_SQUARE(0, -1, 0, 0, 0, 1);
-    TEST_SOLVE_SQUARE(1, 2, -3, -3, 1, 2);
-    TEST_SOLVE_SQUARE(1, 2, -4, -3.2361, 1.2361, 2);
-    TEST_SOLVE_SQUARE(1, 0, -16, -4, 4, 1);
-    fclose(tmp);
-    END_TEST;
+    int nRoots = solve_square(params, roots);
+    switch (nRoots)
+    {
+        case ZERO_ROOTS:
+            printf(SMALL_ERROR_COLOR("There are no roots\n"));
+            break;
+
+        case ONE_ROOT:
+            printf(CORRECT_COLOR("x = %lf\n"), roots->x1);
+            break;
+
+        case TWO_ROOTS:
+            printf(CORRECT_COLOR("x1 = %lf\tx2 = %lf\n"), roots->x1, roots->x2);
+            break;
+
+        case INF_ROOTS:
+            printf(SMALL_ERROR_COLOR("Number of roots: infinity\n"));
+            break;
+
+        default:
+            break;
+    }
+
     return 0;
 }
