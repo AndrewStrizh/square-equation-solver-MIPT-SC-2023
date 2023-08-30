@@ -54,13 +54,10 @@ int init_params(struct Params* params);
 
 /**
  *Function that draws a graph according to the specified parameters interval X and step
- *\param params - structure storing the parameters of a quadratic equation
- *\param lx - left border of the graph
- *\param rx - right border of the graph
- *\param step - step with which the graph points are calculated
- *\return in case of an error, returns 1
+ *\param p - structure storing the parameters of a quadratic equation
+ *\param gp - structure contains the left and right borders for drawing the graph, as well as the step with which the points are marked
  */
-int graph(const struct Params p, double lx, const double rx, const double step);
+int graph(const struct Params p, const struct Graph_params gp);
 
 
 /**
@@ -69,6 +66,16 @@ int graph(const struct Params p, double lx, const double rx, const double step);
 struct Params
 {
     double a, b, c;
+};
+
+
+/**
+ *\brief This structure contains the left and right borders for drawing the graph,
+ *as well as the step with which the points are marked
+ */
+struct Graph_params
+{
+    double lx, rx, step;
 };
 
 
