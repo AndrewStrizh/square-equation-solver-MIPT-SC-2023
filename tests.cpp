@@ -34,6 +34,7 @@ int run_test_solve_square(
     return 0;
 }
 
+
 int test_solve(const struct test_solve_square t, FILE* tmp, int* all_answers)
 {
     assert(tmp);
@@ -61,6 +62,7 @@ int test_solve(const struct test_solve_square t, FILE* tmp, int* all_answers)
     else
         return 0;
 }
+
 
 int all_tests(const char* filename)
 {
