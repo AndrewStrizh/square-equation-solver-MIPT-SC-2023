@@ -77,7 +77,7 @@ int do_read_double(double* value, const char* prompt)
     int status = 0;
     do
     {
-        char enter[25] = "Enter the ";
+        char enter[100] = "Enter the ";
         status = read_double(value, strcat(enter, prompt));
         if (status != 0)
         {
