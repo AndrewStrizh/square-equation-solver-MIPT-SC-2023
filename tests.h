@@ -28,15 +28,15 @@
 /**
  *\brief Macro that creates variables for the number of all tests and valid tests
  */
-#define BEGIN_TEST                                                                                 \
-    int correct_answers = 0;                                                                       \
+#define BEGIN_TEST                                                                             \
+    int correct_answers = 0;                                                                   \
     int all_answers = 0;
 
 
 /**
  *\brief Macro that outputs variable numbers of all tests and valid tests to the console
  */
-#define END_TEST                                                                                   \
+#define END_TEST                                                                               \
     printf(GREEN_TEXT "passed %d tests out of %d" RESET_COLOR, correct_answers, all_answers);
 
 
